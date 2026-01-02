@@ -3,8 +3,8 @@ import time
 import jwt
 import requests
 
-APP_ID = os.getenv("APP_ID")
-PRIVATE_KEY = os.getenv("PRIVATE_KEY")
+APP_ID = os.getenv("SHELF_BOT_APP_ID")
+PRIVATE_KEY = os.getenv("SHELF_BOT_PRIVATE_KEY")
 
 def get_token():
     # Format key and create JWT for Python 3.14+
