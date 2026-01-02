@@ -1,31 +1,29 @@
-import tarfile
-import os
-import shutil
 import sys
+import os
+import tarfile
 
 TARGET_BASE = "/opt/shelf"
 
-def install_trophy(file_path):
-    if not file_path.endswith(".trophy.tar.gz"):
-        print("🗒️ SHELF INSTALLER Error: Not a valid .trophy.tar.gz file.")
+def run_install(package_name):
+    # For this example, we assume the trophy is in a temp folder 
+    # or you add code here to download it from GitHub
+    trophy_file = f"{package_name}.trophy.tar.gz"
+    
+    if not os.path.exists(trophy_file):
+        print(f"❌ Error: {trophy_file} not found in current directory.")
         return
 
-    # Extract app name: mypackage.trophy.tar.gz -> mypackage
-    package_name = os.path.basename(file_path).split(".")[0]
-    install_destination = os.path.join(TARGET_BASE, package_name)
+    install_path = os.path.join(TARGET_BASE, package_name)
+    os.makedirs(install_path, exist_ok=True)
 
-    print(f"🏆 Pouring Trophy: {package_name} into {install_destination}...")
-
-    if not os.path.exists(install_destination):
-        os.makedirs(install_destination, exist_ok=True)
-
-    with tarfile.open(file_path, "r:gz") as archive:
-        archive.extractall(path=install_destination)
+    print(f"🏆 Installing {package_name} into {install_path}...")
     
-    print(f"☑️ Successfully installed to {install_destination}")
+    with tarfile.open(trophy_file, "r:gz") as archive:
+        archive.extractall(path=install_path)
+    
+    print(f"✅ Done! '{package_name}' is now on the Shelf.")
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python3 shelf_installer.py <path_to_trophy>")
-    else:
-        install_trophy(sys.argv[1])
+    # The shell script passes the package name as the first argument
+    pkg = sys.argv[1]
+    run_install(pkg)
