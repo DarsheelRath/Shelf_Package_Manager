@@ -21,12 +21,11 @@ jobs:
           # Example: mypackage.trophy.tar.gz
           tar -czvf mypackage.trophy.tar.gz ./source_code
 
-      - name: Upload to GitHub Packages
+- name: Run Shelf Bot
         env:
+          # This is the "Handover":
+          # PYTHON_VAR_NAME: ${{ secrets.GITHUB_SECRET_NAME }}
           APP_ID: ${{ secrets.SHELF_BOT_APP_ID }}
           PRIVATE_KEY: ${{ secrets.SHELF_BOT_PRIVATE_KEY }}
           INSTALLATION_ID: ${{ secrets.INSTALL_ID }}
-        run: |
-          # Use your python bot script to handle the upload logic
-          python3 shelf_bot.py
-          # (Logic here would use the token to PUT the file to GitHub Packages)
+        run: python3 shelf_bot.py
