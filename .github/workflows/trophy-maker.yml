@@ -1,0 +1,32 @@
+name: Shelf Trophy Maker
+on: [push]
+
+jobs:
+  build-trophy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Install Dependencies
+        run: pip install PyJWT requests cryptography
+
+      - name: Create Trophy Package
+        run: |
+          # Package the 'source_code' folder into a Trophy
+          # Example: mypackage.trophy.tar.gz
+          tar -czvf mypackage.trophy.tar.gz ./source_code
+
+      - name: Upload to GitHub Packages
+        env:
+          APP_ID: ${{ secrets.SHELF_BOT_APP_ID }}
+          PRIVATE_KEY: ${{ secrets.SHELF_BOT_PRIVATE_KEY }}
+          INSTALLATION_ID: ${{ secrets.INSTALL_ID }}
+        run: |
+          # Use your python bot script to handle the upload logic
+          python3 shelf_bot.py
+          # (Logic here would use the token to PUT the file to GitHub Packages)
