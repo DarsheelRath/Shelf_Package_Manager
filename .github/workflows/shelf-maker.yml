@@ -1,0 +1,29 @@
+name: Shelf Trophy Maker
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write # Needed to upload to GitHub Packages
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Trophy
+        run: |
+          # Package everything in your 'src' folder into a Trophy
+          # Replacing 'mypackage' with your actual repo name
+          tar -czvf mypackage.trophy.tar.gz ./src
+          
+      - name: Upload Trophy to GitHub Packages
+        run: |
+          # Note: GitHub Packages usually expects Docker images or NuGet/NPM.
+          # For raw files, we use 'Generic Packages' or 'Releases'.
+          # Here we upload as a Release Asset for simplicity.
+          gh release create v${{ github.run_number }} mypackage.trophy.tar.gz --title "Trophy ${{ github.run_number }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
