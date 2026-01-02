@@ -17,7 +17,7 @@ def get_token():
     encoded_jwt = jwt.encode(payload, formatted_key, algorithm="RS256")
     
     # Replace with your actual Installation ID
-    INSTALL_ID = os.getenv("INSTALLATION_ID") 
+    INSTALL_ID = os.getenv("INSTALL_ID") 
     
     url = f"https://api.github.com/app/installations/{INSTALL_ID}/access_tokens"
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
